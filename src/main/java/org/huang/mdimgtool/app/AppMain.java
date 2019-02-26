@@ -1,7 +1,6 @@
 package org.huang.mdimgtool.app;
 
 import java.awt.AWTException;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -11,7 +10,6 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -72,41 +70,40 @@ public class AppMain{
 			Dimension screenSize = kit.getScreenSize();
 			captureFrame.setSize(screenSize);
 					
-			JPanel contentPane = new JPanel() {
-
-				private static final long serialVersionUID = 3767466677847605307L;
-				
-				public void paintComponent(Graphics g) {
-					// capture full screen
-					
-					// if( Utils.READY_TO_CAPTURE ) {
-						try {
-							Robot robot = new Robot();
-
-							BufferedImage screenSelectedImage = robot.createScreenCapture(new Rectangle(0, 0, (int)this.getWidth(), (int)this.getHeight()));
-							
-							ImageIcon icon=new ImageIcon(screenSelectedImage);
-							Image img=icon.getImage();
-							g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
-							
-							// Utils.READY_TO_CAPTURE  = false;
-						} catch (AWTException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					// }
-				}
-			};
+			ContentPanel contentPane = new ContentPanel();
 			captureFrame.setContentPane(contentPane);
-			captureFrame.getContentPane().setVisible(true);
+			contentPane.setVisible(true);
 			
 			// add this full screen to background
 			CapturePanel capturePane = new CapturePanel(appFrame, captureFrame);
 			capturePane.setOpaque(false);
 			captureFrame.setGlassPane(capturePane);
-			captureFrame.getGlassPane().setVisible(true);
+			capturePane.setVisible(true);
 			
 			captureFrame.setVisible(true);
+		}
+	}
+	
+	static class ContentPanel extends JPanel{
+		private static final long serialVersionUID = 3767466677847605307L;
+		
+		public void paintComponent(Graphics g) {
+			// capture full screen
+			try {
+
+				if(Utils.screenSelectedImage == null) {
+					Robot robot = new Robot();
+					Utils.screenSelectedImage = robot.createScreenCapture(new Rectangle(0, 0, (int)this.getWidth(), (int)this.getHeight()));
+				}
+				
+				ImageIcon icon=new ImageIcon(Utils.screenSelectedImage);
+				Image img=icon.getImage();
+				g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
+					
+			} catch (AWTException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 	

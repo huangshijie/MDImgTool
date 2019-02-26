@@ -3,7 +3,6 @@ package org.huang.mdimgtool.app;
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -72,24 +71,13 @@ public class CapturePanel extends JPanel {
 			// Change back to normal
 			e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			
-			Rectangle captureRect = new Rectangle(startPoint, new Dimension(Math.abs(endPoint.x - startPoint.x), Math.abs(endPoint.y - startPoint.y)));
+			Rectangle captureRect = new Rectangle(startPoint.x + 1 , startPoint.y + 1, Math.abs(endPoint.x - startPoint.x - 1), Math.abs(endPoint.y - startPoint.y - 1));
 			try {
 				Robot robot = new Robot();
 
 				BufferedImage screenSelectedImage = robot.createScreenCapture(captureRect);
 				ImageIO.write(screenSelectedImage, Utils.IMG_FORMAT, new File(Utils.CAPTURE_SCREEN_FILE_NAME + Utils.FILE_SPLIT + Utils.IMG_FORMAT));
 				
-				// Firstly minimize this tool APP
-				if (appFrame != null) {
-					appFrame.setState(Frame.NORMAL);
-				}
-				
-				if(captureFrame != null) {
-					captureFrame.dispose();
-					captureFrame = null;
-				}
-				
-				// Utils.READY_TO_CAPTURE  = true;
 			} catch (AWTException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
@@ -97,6 +85,17 @@ public class CapturePanel extends JPanel {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			
+			// Firstly minimize this tool APP
+			if (appFrame != null) {
+				appFrame.setState(Frame.NORMAL);
+			}
+			
+			if(captureFrame != null) {
+				captureFrame.dispose();
+				captureFrame = null;
+			}
+			Utils.screenSelectedImage = null;
 		}
 	}
 	
