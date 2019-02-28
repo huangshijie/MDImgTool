@@ -24,17 +24,13 @@ Then done!
 ## Img Repository initialization
 As this tool is not for git management purpose, you need to predefine your img repository.
 You can follow steps below.
-
-> cd LOCAL_FILE_PATH
-
-> git init
-
-> git pull GIT_REMOTE_URL
-
-> git remote add origin GIT_REMOTE_URL
-
-> git push --set-upstream master master
-
+```
+cd LOCAL_FILE_PATH
+git init
+git pull GIT_REMOTE_URL
+git remote add origin GIT_REMOTE_URL
+git push --set-upstream master master
+```
 ## Tool Predefined
 For now 'Settings' is not avaiable, all setting needs to define in the 'app.properties' file.
 As below shown.
