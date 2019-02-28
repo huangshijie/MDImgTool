@@ -3,6 +3,7 @@ package org.huang.mdimgtool.app;
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dialog.ModalityType;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -11,10 +12,7 @@ import java.awt.Robot;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -71,22 +69,7 @@ public class CapturePanel extends JPanel {
 			// Change back to normal
 			e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			
-			Rectangle captureRect = new Rectangle(startPoint.x + 1 , startPoint.y + 1, Math.abs(endPoint.x - startPoint.x - 1), Math.abs(endPoint.y - startPoint.y - 1));
-			try {
-				Robot robot = new Robot();
-
-				BufferedImage screenSelectedImage = robot.createScreenCapture(captureRect);
-				ImageIO.write(screenSelectedImage, Utils.IMG_FORMAT, new File(Utils.CAPTURE_SCREEN_FILE_NAME + Utils.FILE_SPLIT + Utils.IMG_FORMAT));
-				
-			} catch (AWTException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
-			// Firstly minimize this tool APP
+			// Firstly set this tool APP normal
 			if (appFrame != null) {
 				appFrame.setState(Frame.NORMAL);
 			}
@@ -95,7 +78,25 @@ public class CapturePanel extends JPanel {
 				captureFrame.dispose();
 				captureFrame = null;
 			}
-			Utils.screenSelectedImage = null;
+			
+			Rectangle captureRect = new Rectangle(startPoint.x + 1 , startPoint.y + 1, Math.abs(endPoint.x - startPoint.x - 1), Math.abs(endPoint.y - startPoint.y - 1));
+			try {
+				Robot robot = new Robot();
+
+				BufferedImage screenSelectedImage = robot.createScreenCapture(captureRect);
+				
+				DisplayDialog displayDialog = new DisplayDialog(screenSelectedImage); 
+				displayDialog.setModalityType(ModalityType.APPLICATION_MODAL);
+				displayDialog.setSize(600,500);
+				displayDialog.setVisible(true);
+				
+				Utils.screenSelectedImage = null;
+				
+			} catch (AWTException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			
 		}
 	}
 	
