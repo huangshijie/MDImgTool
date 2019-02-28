@@ -34,7 +34,8 @@ git push --set-upstream master master
 ## Tool Predefined
 For now 'Settings' is not avaiable, all setting needs to define in the 'app.properties' file.
 As below shown.
-![Tool app properties example](https://github.com/huangshijie/ImgRep/blob/master/Tool app properties example.png)
+
+![Tool app properties example](https://github.com/huangshijie/ImgRep/blob/master/Tool%20app%20properties%20example.png)
 
 # Contact
 If you have any question or improve idea, please rise it in issues.
